@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Adventure</title>
+    <link rel="stylesheet" href="styles/style.css" />
+  </head>
+  <body>
+    <div class="left">
+      <div class="data">
+        <div class="data-container">
+          <h2>Life</h2>
+          <div id="life-box" class="raw-box"></div>
+        </div>
+        <div class="data-container">
+          <h2>Strength</h2>
+          <div id="strength-box" class="raw-box"></div>
+        </div>
+      </div>
+      <div class="box-container">
+        <h2>Instructions</h2>
+        <p>Use your keyboard</p>
+        <img
+          class="instruction-img"
+          src="https://cdn3.iconfinder.com/data/icons/games-entertainment-flat/614/3642_-_Direction_Keys-512.png"
+        />
+      </div>
+    </div>
+    <div class="center">
+      <header>
+        <h1>The Adventure</h1>
+      </header>
+      <div id="board" class="board"></div>
+      <footer><p>Ironhack Project - 2023</p></footer>
+    </div>
+    <div class="right">
+      <div class="data">
+        <div class="data-container">
+          <h2>Waves timing</h2>
+          <div id="timing-box" class="raw-box"></div>
+        </div>
+        <div class="data-container">
+          <h2>Waves #</h2>
+          <div id="numb-box" class="raw-box"></div>
+        </div>
+      </div>
+      <div class="box-container">
+        <button id="start" class="button">Start/Replay</button>
+      </div>
+    </div>
+  </body>
+  <script src="src/index.js"></script>
+</html>

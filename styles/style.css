@@ -1,0 +1,228 @@
+@font-face {
+  font-family: "Digi";
+  src: url("fonts/ds-digib.ttf");
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (min-width: 768px) {
+  body {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: auto;
+
+    background-color: rgb(157, 127, 255);
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  h2 {
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-top: 30%;
+  }
+
+  p {
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .left,
+  .right {
+    width: 20%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin: auto;
+
+    background-color: aquamarine;
+  }
+  .data {
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: auto;
+    background-color: blue;
+  }
+  .data-container {
+    width: 100%;
+    height: 25vh;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: auto;
+
+    background-color: chocolate;
+  }
+  .box-container {
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    padding-top: 2%;
+    background-color: chocolate;
+  }
+
+  .box-container h2,
+  p  {
+    width: 100%;
+  }
+
+  .raw-box {
+    width: 100%;
+    align-items: center;
+
+    font-size: 2rem;
+    text-align: center;
+  }
+  .raw-box-ind {
+    width: 15%;
+    align-items: center;
+    margin: auto;
+  }
+
+  .instruction {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: auto;
+    background-color: chocolate;
+  }
+
+  .instruction-img {
+    height: 20vh;
+  }
+
+  .center {
+    width: 60%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: auto;
+    background-color: rgb(255, 127, 127);
+  }
+
+  header,
+  footer {
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    margin: auto;
+    background-color: rgb(104, 21, 102);
+  }
+
+  .board {
+    width: 100%;
+    display: flex;
+    height: 80vh;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: auto;
+    background-color: rgb(21, 104, 21);
+  }
+
+  .board-card {
+    width: 100%;
+    aspect-ratio: 1;
+    margin: auto;
+  }
+
+  .grass {
+    background-image: url(.././src/grass.jpeg);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .mob {
+    background-image: url(.././src/mob.png), url(.././src/grass.jpeg);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease-in-out;
+  }
+  .mob-attack {
+    background-image: url(.././src/mob_att.png), url(.././src/grass.jpeg);
+  }
+  .hero {
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease;
+  }
+  .hero-up {
+    background-image: url(.././src/up_walk.png), url(.././src/grass.jpeg);
+  }
+  .hero-right {
+    background-image: url(.././src/right_walk.png), url(.././src/grass.jpeg);
+  }
+  .hero-left {
+    background-image: url(.././src/left_walk.png), url(.././src/grass.jpeg);
+  }
+  .hero-down {
+    background-image: url(.././src/down_walk.png), url(.././src/grass.jpeg);
+  }
+  .hero-up-attack {
+    background-image: url(.././src/up_att.png), url(.././src/grass.jpeg);
+  }
+  .hero-right-attack {
+    background-image: url(.././src/right_att.png), url(.././src/grass.jpeg);
+  }
+  .hero-left-attack {
+    background-image: url(.././src/left_att.png), url(.././src/grass.jpeg);
+  }
+  .hero-down-attack {
+    background-image: url(.././src/down_att.png), url(.././src/grass.jpeg);
+  }
+
+  footer p {
+    font-size: 1rem;
+    font-style: italic;
+  }
+
+  .button {
+    width: 70%;
+    height: 20%;
+    background-color: white;
+    border-radius: 5%;
+    border: 1px black solid;
+    box-shadow: 1px 1px;
+    font-weight: bold;
+  }
+  .button:hover {
+    background-color: #3e8e41;
+  }
+
+  .button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+}
