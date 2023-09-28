@@ -1,8 +1,3 @@
-@font-face {
-  font-family: "Digi";
-  src: url("fonts/ds-digib.ttf");
-}
-
 @media screen and (max-width: 768px) {
 }
 
@@ -14,7 +9,7 @@
     flex-direction: row;
     align-items: center;
     margin: auto;
-
+    font-family: monospace;
     background-color: rgb(157, 127, 255);
   }
 
@@ -22,40 +17,40 @@
     text-align: center;
     font-size: 2rem;
     font-weight: bold;
+    font-family: monospace;
   }
 
   h2 {
     text-align: center;
     font-size: 1.25rem;
     font-weight: bold;
-    margin-top: 30%;
+    font-family: monospace;
   }
 
   p {
     text-align: center;
     font-size: 1rem;
+    font-family: monospace;
   }
 
   .left,
   .right {
     width: 20%;
-    height: 100vh;
+    height: 90vh;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: center;
     margin: auto;
-
+    padding-top: 10vh;
     background-color: aquamarine;
   }
   .data {
     width: 100%;
-    height: 50vh;
+    height: 32vh;
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
     align-items: center;
-    margin: auto;
     background-color: blue;
   }
   .data-container {
@@ -66,7 +61,7 @@
     flex-wrap: wrap;
     align-items: center;
     margin: auto;
-
+    justify-content: flex-start;
     background-color: chocolate;
   }
   .box-container {
@@ -82,7 +77,7 @@
   }
 
   .box-container h2,
-  p  {
+  p {
     width: 100%;
   }
 
@@ -111,6 +106,26 @@
 
   .instruction-img {
     height: 20vh;
+  }
+
+  .keyPad {
+    background-image: url(.././src/pad.png);
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 20%;
+    background-size: cover;
+    padding: 20% 0;
+  }
+
+  .keyPadBox {
+    width: 30%;
+    margin: auto;
+    height: 33%;
   }
 
   .center {
@@ -147,12 +162,17 @@
     align-items: center;
     margin: auto;
     background-color: rgb(21, 104, 21);
+    justify-content: center;
+    font-family: monospace;
+    font-size: 3rem;
+    font-weight: bold;
   }
 
   .board-card {
     width: 100%;
     aspect-ratio: 1;
     margin: auto;
+    background-size: 105% !important;
   }
 
   .grass {
@@ -160,6 +180,14 @@
     background-size: auto;
     background-repeat: no-repeat;
     background-position: center;
+    background-size: cover;
+  }
+  .tree {
+    background-image: url(.././src/tree.png), url(.././src/grass.jpeg);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
   }
   .mob {
     background-image: url(.././src/mob.png), url(.././src/grass.jpeg);
@@ -169,6 +197,10 @@
     transition-timing-function: ease-in-out;
   }
   .mob-attack {
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease-in-out;
     background-image: url(.././src/mob_att.png), url(.././src/grass.jpeg);
   }
   .hero {
