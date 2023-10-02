@@ -1,0 +1,144 @@
+/*
+
+run() {
+    let intervalID3 = setInterval(() => {
+      // Make Mobs move
+      let heroPosition = hero.position;
+      // Loop for each Mob
+      for (let element of this.mobs) {
+
+        Mob.calcBestWay(element)
+        Mob.move (element)
+
+
+        //Calculate shortest way to the Hero
+        let xDiff = Math.abs(heroPosition[0] - element.position[0]);
+        let yDiff = Math.abs(heroPosition[1] - element.position[1]);
+        let x = 0;
+        let y = 0;
+
+        if (xDiff >= yDiff && heroPosition[0] > element.position[0]) {
+          x = 1;
+          y = 0;
+        } else if (xDiff >= yDiff && heroPosition[0] < element.position[0]) {
+          x = -1;
+          y = 0;
+        } else if (xDiff < yDiff && heroPosition[1] > element.position[1]) {
+          x = 0;
+          y = 1;
+        } else if (xDiff < yDiff && heroPosition[1] < element.position[1]) {
+          x = 0;
+          y = -1;
+        }
+
+        // check Hero - don't pass through
+        if (
+          heroPosition[0] === element.position[0] + x &&
+          heroPosition[1] === element.position[1] + y
+        ) {
+          x = 0;
+          y = 0;
+
+          // + Attack Hero !!
+
+          element.attack();
+          console.log(element.position + "hero there");
+          continue;
+        }
+        console.log(element.position + "no hero there");
+        // check others Mobs - don't pass through
+        for (let element2 of this.mobs) {
+          // Check Front
+          if (
+            element2.position[0] === element.position[0] + x &&
+            element2.position[1] === element.position[1] + y
+          ) {
+            console.log(
+              element.position +
+                " Mob in front, direction (" +
+                (element.position[0] + x) +
+                "/" +
+                (element.position[1] + y) +
+                ", checking if mob there :" +
+                element2.position[0] +
+                "/" +
+                element2.position[1]
+            );
+            // Check One-Side
+
+            for (let element3 of this.mobs) {
+              console.log("toto" + x + "/" + y);
+              if (
+                element3.position[0] === element.position[0] + y &&
+                element3.position[1] === element.position[1] + x
+              ) {
+                console.log(
+                  element.position +
+                    " Mob in One-Side, direction (" +
+                    (element.position[0] + y) +
+                    "/" +
+                    (element.position[1] + x) +
+                    ", checking if mob there :" +
+                    element3.position[0] +
+                    "/" +
+                    element3.position[1]
+                );
+                // Check Other-Side
+                for (let element4 of this.mobs) {
+                  if (
+                    element4.position[0] === element.position[0] - y &&
+                    element4.position[1] === element.position[1] - x
+                  ) {
+                    console.log(
+                      element.position +
+                        " Mob in Other-Side, direction (" +
+                        (element.position[0] + ":" + -y) +
+                        "/" +
+                        (element.position[1] + ":" + -x) +
+                        ", checking if mob there :" +
+                        element4.position[0] +
+                        "/" +
+                        element4.position[1]
+                    );
+                    x = 0;
+                    y = 0;
+                    break;
+                  } else {
+                    x = -y;
+                    y = -x;
+                    break;
+                  }
+                }
+              } else {
+                console.log(
+                  element.position +
+                    " No Mob in One-Side, direction (" +
+                    (element.position[0] + ":" + y) +
+                    "/" +
+                    (element.position[1] + ":" + x) +
+                    ", checking if mob there :" +
+                    element3.position[0] +
+                    "/" +
+                    element3.position[1]
+                );
+                console.log("answer : " + x + "/" + y);
+                x += y;
+                y += x;
+                console.log("answer3 : " + x + "/" + y);
+                break;
+              }
+            }
+          }
+        }
+        // Move
+        element.move(x, y);
+      }
+
+      const btnRight = document.getElementById("start");
+      btnRight.addEventListener("click", () => {
+        clearInterval(intervalID3);
+      });
+    }, 1000);
+  }
+
+  */

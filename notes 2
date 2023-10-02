@@ -1,0 +1,113 @@
+// Generate all movements
+
+let xDiff = Math.abs(hero.position[0] - element.position[0]);
+let yDiff = Math.abs(hero.position[1] - element.position[1]);
+
+console.log("MobPos : " + element.position);
+console.log("HeroPos : " + hero.position);
+
+let x = 0;
+let y = 0;
+
+let firstWay = [];
+for (let i = 1; i <= xDiff; i++) {
+  let newX = (hero.position[0] - element.position[0]) / xDiff;
+  let newY = 0;
+
+  firstWay.push([newX, newY]);
+}
+for (let j = 1; j < yDiff; j++) {
+  let newX = 0;
+  let newY = (hero.position[1] - element.position[1]) / yDiff;
+
+  firstWay.push([newX, newY]);
+}
+
+console.log("firstWay : ");
+console.log(firstWay);
+
+// Generate all the movements combination
+
+let possibleWays = [];
+
+function generatePermutations(inputArray) {
+  // Fonction récursive pour générer les permutations
+  function generate(currentPermutation, remainingElements) {
+    if (remainingElements.length === 0) {
+      // Si aucun élément restant, ajoute la permutation actuelle au résultat
+      result.push(currentPermutation.slice());
+    } else {
+      for (let i = 0; i < remainingElements.length; i++) {
+        // Choisis un élément de la liste des éléments restants
+        const nextElement = remainingElements[i];
+
+        // Crée une copie de la permutation actuelle
+        const newPermutation = currentPermutation.slice();
+
+        // Ajoute l'élément choisi à la permutation
+        newPermutation.push(nextElement);
+
+        // Enlève l'élément choisi de la liste des éléments restants
+        const remaining = remainingElements
+          .slice(0, i)
+          .concat(remainingElements.slice(i + 1));
+
+        // Appelle récursivement la fonction avec la nouvelle permutation et les éléments restants
+        generate(newPermutation, remaining);
+      }
+    }
+  }
+
+  // Initialisation du résultat et appel initial de la fonction récursive
+  const result = [];
+  generate([], inputArray);
+  return result;
+}
+
+possibleWays = generatePermutations(firstWay);
+console.log("possibleWays : ");
+console.log(possibleWays);
+
+this.bestWay = [];
+
+// Score the Ways
+
+// for (let element of this.possibleWays) {
+//   let score = 0;
+//   for (let element2 of element) {
+//     let checkedCard = board.getElementById(element2);
+//     if (checkedCard.match(/tree/) || checkedCard.match(/mob/)) {
+//       score++;
+//     }
+//   }
+//   this.possibleWay.unshift(score);
+// }
+// this.possibleWay.sort((a, b) => b[0] - a[0]);
+
+// console.log("PossibleWaysClassed : ");
+// console.log(this.possibleWays);
+
+// this.bestWay = this.possibleWay[0];
+
+// console.log("BestWays : ");
+// console.log(this.bestWay);
+
+// x = this.bestWay[1];
+// y = this.bestWay[2];
+
+// console.log("NextMove : " + x + " / " + y);
+
+// // check Hero - don't pass through
+// if (
+//   hero.position[0] === this.bestWay[1] &&
+//   hero.position[1] === this.bestWay[2]
+// ) {
+//   x = 0;
+//   y = 0;
+
+//   // + Attack Hero !!
+
+//   element.attack();
+// }
+
+// move(x, y);

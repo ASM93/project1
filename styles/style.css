@@ -166,31 +166,61 @@
     font-family: monospace;
     font-size: 3rem;
     font-weight: bold;
+    background-image: url(.././src/grass2.jpg);
+    background-size: 10%;
+  }
+
+  .board-castle {
+    width: 100%;
+    display: flex;
+    height: 80vh;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: auto;
+    background-color: rgb(21, 104, 21);
+    justify-content: center;
+    font-family: monospace;
+    font-size: 3rem;
+    font-weight: bold;
+    background-image: url(.././src/stone2.jpeg);
+    background-size: 4%;
   }
 
   .board-card {
     width: 100%;
     aspect-ratio: 1;
     margin: auto;
-    background-size: 105% !important;
+    background-size: contain !important;
   }
 
   .grass {
-    background-image: url(.././src/grass.jpeg);
+    /* background-image: url(.././src/grass.jpeg);
     background-size: auto;
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;
+    background-size: cover; */
   }
   .tree {
-    background-image: url(.././src/tree.png), url(.././src/grass.jpeg);
+    background-image: url(.././src/tree.png);
     background-size: auto;
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;
+  }
+  .gate {
+    background-image: url(.././src/gate.png) !important;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .castle {
+    background-image: url(.././src/stone.webp);
+    background-size: auto;
+    background-size: 120% !important ;
+    background-position: center;
   }
   .mob {
-    background-image: url(.././src/mob.png), url(.././src/grass.jpeg);
+    background-image: url(.././src/mob.png);
     background-size: auto;
     background-repeat: no-repeat;
     background-position: center;
@@ -201,7 +231,7 @@
     background-repeat: no-repeat;
     background-position: center;
     transition-timing-function: ease-in-out;
-    background-image: url(.././src/mob_att.png), url(.././src/grass.jpeg);
+    background-image: url(.././src/mob_att.png);
   }
   .hero {
     background-size: auto;
@@ -210,28 +240,28 @@
     transition-timing-function: ease;
   }
   .hero-up {
-    background-image: url(.././src/up_walk.png), url(.././src/grass.jpeg);
+    background-image: url(.././src/up_walk.png);
   }
   .hero-right {
-    background-image: url(.././src/right_walk.png), url(.././src/grass.jpeg);
+    background-image: url(.././src/right_walk.png);
   }
   .hero-left {
-    background-image: url(.././src/left_walk.png), url(.././src/grass.jpeg);
+    background-image: url(.././src/left_walk.png);
   }
   .hero-down {
-    background-image: url(.././src/down_walk.png), url(.././src/grass.jpeg);
+    background-image: url(.././src/down_walk.png);
   }
   .hero-up-attack {
-    background-image: url(.././src/up_att.png), url(.././src/grass.jpeg);
+    background-image: url(.././src/up_att.png);
   }
   .hero-right-attack {
-    background-image: url(.././src/right_att.png), url(.././src/grass.jpeg);
+    background-image: url(.././src/right_att.png);
   }
   .hero-left-attack {
-    background-image: url(.././src/left_att.png), url(.././src/grass.jpeg);
+    background-image: url(.././src/left_att.png);
   }
   .hero-down-attack {
-    background-image: url(.././src/down_att.png), url(.././src/grass.jpeg);
+    background-image: url(.././src/down_att.png);
   }
 
   footer p {
