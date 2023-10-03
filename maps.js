@@ -1,6 +1,4 @@
-function genMap(mapNumb, mapSize) {
-  console.log(mapNumb);
-
+function genMap(mapNumb, mapSize, startPosition) {
   for (let i = 1; i <= mapSize[0]; i++) {
     for (let j = 1; j <= mapSize[1]; j++) {
       game.boards.push([i, j]);
@@ -14,6 +12,9 @@ function genMap(mapNumb, mapSize) {
       divCard.style.height = `${height}vh`;
     }
   }
+
+  game.spawnTree();
+  game.spawnGates(startPosition);
 
   //////////// RANDOM MAP ////////////
   if (mapNumb === 0) {
@@ -45,12 +46,19 @@ function genMap(mapNumb, mapSize) {
     let castleGate = [castleGateX, castleGateY];
     game.gates.push(castleGate);
     const gateCard = document.getElementById([castleGateX, castleGateY]);
-    gateCard.className += " castle gate";
+    gateCard.className = " castle gate";
   }
 
   //////////// CASTLE - INSIDE ////////////
   else if (mapNumb === 2) {
-    let divCard = document.getElementById("board");
-    divCard.className += "-castle";
+    game.spawnWalls();
+    let boardCard = document.getElementById("board");
+    boardCard.className = "board-castle";
+
+    for (let element of game.tree) {
+      let treeCard = document.getElementById(element);
+      let newTreeCard = treeCard.className.replace("tree", "castle");
+      treeCard.className = newTreeCard;
+    }
   }
 }

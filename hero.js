@@ -1,6 +1,7 @@
 class Hero {
   constructor() {
     this.position = {};
+    this.spells = [];
     this.orientation = "up";
     this.speed = 1;
     this.attackSpeed = 1;
@@ -12,7 +13,7 @@ class Hero {
   spawn(startPosition, dir) {
     this.position = startPosition;
     const heroCard = document.getElementById([this.position]);
-    heroCard.className = `board-card hero hero-${dir}`;
+    heroCard.className = `hero-${dir}`;
   }
 
   move(x, y, dir) {
@@ -44,28 +45,19 @@ class Hero {
     }
 
     // check if Gate
-
     for (let element of game.gates) {
       if (element[0] === newX && element[1] === newY) {
         gateCheck = true;
       }
     }
 
-    console.log("prout0");
-    // Set up Board Type
-    if (game.boardType === 2) {
-      /* Prout*/
-      console.log("prout1");
-    } else if ((game.boardType = 1)) {
-      game.boardType = 2;
-      console.log("prout3");
-    } else if (game.waveNum === 2) {
-      game.boardType = 1;
-      console.log("prout2");
-    }
-
     // DOING
     if (gateCheck === true) {
+      if (game.boardType === 1) {
+        game.boardType = 2;
+      } else if (game.waveNum === 1) {
+        game.boardType = 1;
+      }
       game.newBoard([newX, newY]);
     } else if (
       newX === 0 ||
@@ -84,11 +76,17 @@ class Hero {
     }
   }
 
-  action() {
+  attack() {
     //Check direction
     let heroCard = document.getElementById(this.position);
     let oldClass = heroCard.className;
     heroCard.className += "-attack";
+
+    // Clear Hero skin
+    setTimeout(() => {
+      heroCard.className = oldClass;
+    }, 100);
+
     let x = 0;
     let y = 0;
 
@@ -133,10 +131,64 @@ class Hero {
         }
       }
     }
+  }
+  spell() {
+    //Init Hero
+    let heroCard = document.getElementById(this.position);
+    let oldClass = heroCard.className;
+    heroCard.className += "-spell";
 
     // Clear Hero skin
     setTimeout(() => {
       heroCard.className = oldClass;
-    }, 50);
+    }, 100);
+
+    let x = 0;
+    let y = 0;
+
+    if (hero.spells.length !== 0) {
+      return;
+    }
+
+    let dir = heroCard.className.substring(
+      heroCard.className.indexOf("hero-") + 5,
+      heroCard.className.length
+    );
+    if (dir === "up-spell") {
+      x = -1;
+    } else if (dir === "down-spell") {
+      x = 1;
+    } else if (dir === "right-spell") {
+      y = 1;
+    } else if (dir === "left-spell") {
+      y = -1;
+    }
+
+    // Init obstacle
+    let obstacle = [...game.tree];
+    for (let i = 0; i < game.gates.length; i++) {
+      obstacle.push(game.gates[i]);
+    }
+    for (let i = 0; i < game.castle.length; i++) {
+      obstacle.push(game.castle[i]);
+    }
+
+    // Create Spell
+    let spellPositionX = hero.position[0] + x;
+    let spellPositionY = hero.position[1] + y;
+    let spellDir = dir.substring(0, dir.indexOf("-"));
+
+    let obstacleCheck = false;
+    for (let element of obstacle) {
+      if (element[0] === spellPositionX && element[1] === spellPositionY) {
+        obstacleCheck = true;
+      }
+    }
+
+    if (obstacleCheck === false) {
+      hero.spells.push([spellPositionX, spellPositionY, spellDir]);
+      let spellCard = document.getElementById([spellPositionX, spellPositionY]);
+      spellCard.className += " spell";
+    }
   }
 }
