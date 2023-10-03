@@ -183,7 +183,7 @@
     font-family: monospace;
     font-size: 3rem;
     font-weight: bold;
-    background-image: url(.././src/stone2.jpeg);
+    background-image: url(.././src/stone2.avif);
     background-size: 4%;
   }
 
@@ -225,6 +225,18 @@
     background-repeat: no-repeat;
     background-position: center;
     transition-timing-function: ease-in-out;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    color: red;
+    line-height: 0%;
+  }
+  .mob-red {
+    background-image: url(.././src/mob-red.png) !important;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease-in-out;
   }
   .mob-attack {
     background-size: auto;
@@ -232,6 +244,11 @@
     background-position: center;
     transition-timing-function: ease-in-out;
     background-image: url(.././src/mob_att.png);
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    color: red;
+    line-height: 0%;
   }
   .hero {
     background-size: auto;
@@ -275,12 +292,25 @@
   .hero-down-spell {
     background-image: url(.././src/down_spell.png);
   }
-
   .spell {
     background-image: url(.././src/fireball.png) !important;
     background-size: auto;
     background-repeat: no-repeat;
     background-position: center;
+  }
+  .obj-health {
+    background-image: url(.././src/health.png);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease-in-out;
+  }
+  .obj-strength {
+    background-image: url(.././src/sword.png);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease-in-out;
   }
 
   footer p {

@@ -7,7 +7,7 @@ class Mob {
     this.orientation = "up";
     this.speed = 1;
     this.attackSpeed = 1;
-    this.life = 1;
+    this.life = 3;
     this.createDate = 0;
     this.wave = 0;
   }
@@ -19,6 +19,7 @@ class Mob {
     //Initializing 1st mobCard
     const mobCard = document.getElementById([this.position]);
     mobCard.className += " mob";
+    mobCard.innerHTML = this.life;
   }
 
   calcBestWay(element) {
@@ -71,7 +72,7 @@ class Mob {
       x = 0;
       y = 0;
       element.attack();
-      return;
+      return [x, y];
     }
 
     // Detect obstacles and return next position
@@ -135,7 +136,7 @@ class Mob {
 
   move(x, y) {
     let oldMobCard = document.getElementById([this.position]);
-
+    oldMobCard.innerHTML = "";
     this.previousPosition = [];
     this.previousPosition = [this.position[0], this.position[1]];
 
@@ -147,31 +148,39 @@ class Mob {
     oldMobCard.className = newOldCard;
     let newMobCard = document.getElementById([this.position]);
     newMobCard.className += " mob";
+    this.updateLife();
   }
 
   attack() {
     // Set less Life
     hero.life--;
-    const life = document.getElementById("life-box");
-    life.innerHTML = "";
-    for (let i = 0; i < hero.life; i++) {
-      life.innerHTML += "💛";
-    }
+    hero.updateData();
 
     // Skin attack
 
     let mobCard = document.getElementById([this.position]);
-    let newOldCard = mobCard.className.replace(" mob", "");
+    let newOldCard = mobCard.className.replace("mob", "mob-attack");
     newOldCard += " mob-attack";
     mobCard.className = newOldCard;
 
     // Clear Mob skin
     setTimeout(() => {
       let newOldCard2 = mobCard.className
-        .replace(" -attack", "")
-        .replace(" mob", "");
+        .replaceAll("mob-attack", "mob")
+        .replaceAll(" ", "")
+        .replaceAll("-attack", "")
+        .replaceAll("mob", "");
       newOldCard2 += " mob";
       mobCard.className = newOldCard2;
-    }, 50);
+    }, 150);
+  }
+
+  updateLife() {
+    let mobCard = document.getElementById([this.position]);
+    if (this.life > 0) {
+      mobCard.innerHTML = this.life;
+    } else {
+      mobCard = "";
+    }
   }
 }

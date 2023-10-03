@@ -11,7 +11,7 @@ class Game {
     this.waveAcc = 2;
     this.waveDur = 100;
     this.waveNum = 0;
-    this.objFreq = 20;
+    this.objFreq = 30;
     this.spellSpeed = 4;
     this.treeFreq = 45;
     this.lifeStart = 3;
@@ -47,10 +47,14 @@ class Game {
       board.innerHTML = "";
       const timer = document.getElementById("timing-box");
       timer.innerHTML = "";
+      let boardCard = document.getElementById("board");
+      boardCard.className = "board";
 
       // Spawn and start the game
-      this.spawnMap(this.boardType);
-      this.spawnMob();
+      this.spawnMap(game.boardType, game.boardSize, [
+        this.boardSize[0],
+        Math.round(this.boardSize[1] / 2),
+      ]);
       this.setData();
       this.boardNum++;
 
@@ -78,18 +82,14 @@ class Game {
     this.gates = [];
     this.castle = [];
     hero.spells = [];
+    this.boardNum++;
+    let startDir = "";
+    let startPosition = [];
     const allCard = document.querySelectorAll(".board-card");
     for (let element of allCard) {
       element.remove();
     }
     board.innerHTML = "";
-
-    // Spawn and start the game
-
-    this.boardNum++;
-
-    let startDir = "";
-    let startPosition = [];
 
     // Calculate Hero position
     if (oldGate[1] === 1) {
@@ -106,7 +106,6 @@ class Game {
       startPosition = [this.boardSize[0], Math.round(this.boardSize[1] / 2)];
     }
     this.spawnMap(game.boardType, game.boardSize, startPosition);
-    this.spawnMob();
     hero.spawn(startPosition, startDir);
   }
 
@@ -127,19 +126,21 @@ class Game {
    */ ////////////////////////
 
   setData() {
-    // Set Start Life
-    const life = document.getElementById("life-box");
-    life.innerHTML = "";
-    hero.life = this.lifeStart;
-    for (let i = 0; i < this.lifeStart; i++) {
-      life.innerHTML += "💛";
-    }
-    // Set Start Strength
-    const strength = document.getElementById("strength-box");
-    strength.innerHTML = "";
-    for (let i = 0; i < this.strengthStart; i++) {
-      strength.innerHTML += "🏹";
-    }
+    hero.updateData();
+
+    // // Set Start Life
+    // const life = document.getElementById("life-box");
+    // life.innerHTML = "";
+    // hero.life = this.lifeStart;
+    // for (let i = 0; i < this.lifeStart; i++) {
+    //   life.innerHTML += "💛";
+    // }
+    // // Set Start Strength
+    // const strength = document.getElementById("strength-box");
+    // strength.innerHTML = "";
+    // for (let i = 0; i < this.strengthStart; i++) {
+    //   strength.innerHTML += "🏹";
+    // }
 
     // // Set Timer
     // let time = this.waveDur;
@@ -216,14 +217,14 @@ class Game {
     // }, this.waveDur * 1000);
   }
 
-  spawnTree() {
+  spawnTree(noCard) {
     for (let i = this.treeFreq; i > 0; i--) {
       let treeX = 1 + Math.floor(Math.random() * this.boardSize[0]);
       let treeY = 1 + Math.floor(Math.random() * this.boardSize[1]);
       let tree = [treeX, treeY];
       let check = false;
 
-      for (let element of game.castle) {
+      for (let element of noCard) {
         if (tree[0] === element[0] && tree[1] === element[1]) {
           check = true;
         }
@@ -312,7 +313,6 @@ class Game {
 
   spawnGates(oldGate) {
     let possibleGates = [];
-    let random = 0;
 
     if (game.boardType === 0 || game.boardType === 2) {
       let random = Math.floor(Math.random() * 3);
@@ -364,11 +364,16 @@ class Game {
     let intervalID = setInterval(
       () => {
         count++;
+
+        /////////// Automate Mobs - Start ///////////
         if (count % this.spellSpeed === 0) {
           //let status = this.checkStatus();
           // Make Mobs move
           for (let element of this.mobs) {
+            console.log("tada");
+            console.log(element);
             let bestWay = element.calcBestWay(element);
+            console.log(bestWay);
             element.move(bestWay[0], bestWay[1]);
           }
 
@@ -381,6 +386,17 @@ class Game {
             clearInterval(intervalID);
           });
         }
+
+        /////////// Automate Object - Start ///////////
+        if (count % this.objFreq === 0) {
+          let object = new Object();
+
+          game.objects.push(object);
+          object.spawn();
+          console.log("OBJ SPAWNED");
+          console.log(object);
+        }
+
         /////////// Automate Spell - Start ///////////
 
         // Init obstacle
@@ -456,11 +472,13 @@ class Game {
           // Check Mobs
           else if (checkMob === true) {
             // hit - damage
-            hitMob.life -= hero.strength;
+            hitMob.life -= hero.strength_spell;
+            hitMob.updateLife();
             if (hitMob.life <= 0) {
               const mobCard = document.getElementById(hitMob.position);
               let newMobCard = mobCard.className.replace("mob", "");
               mobCard.className = newMobCard;
+              mobCard.innerHTML = "";
               let mobIndex;
               for (let i = 0; i < game.mobs.length; i++) {
                 if (
@@ -497,7 +515,6 @@ class Game {
         }
       },
 
-      /////////// Automate Spell - End ///////////
       1000 / this.spellSpeed
     );
   }
@@ -507,14 +524,54 @@ class Game {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class Object {
-  constructor(position, type, createDate) {
-    this.position = position;
-    this.type = type;
-    this.createDate = createDate;
-    this.timing = 30;
+  constructor() {
+    this.position = [];
+    this.type = "";
   }
-  spawn() {}
-  disappear() {}
+  spawn() {
+    // Select type
+    let random = Math.floor(Math.random() * 2);
+    console.log(random);
+    if (random === 0) {
+      this.type = "health";
+    } else if (random === 1) {
+      this.type = "strength";
+    }
+
+    // Select random position
+
+    let objectX = 1 + Math.floor(Math.random() * game.boardSize[0]);
+    let objectY = 1 + Math.floor(Math.random() * game.boardSize[1]);
+    this.position = [objectX, objectY];
+
+    let obstacle = [...game.tree];
+    for (let i = 0; i < game.mobs.length; i++) {
+      obstacle.push(game.mobs[i].position);
+    }
+    for (let i = 0; i < game.gates.length; i++) {
+      obstacle.push(game.gates[i]);
+    }
+    for (let i = 0; i < game.castle.length; i++) {
+      obstacle.push(game.castle[i]);
+    }
+
+    let check = false;
+    for (let element of obstacle) {
+      if (this.position[0] === element[0] && this.position[1] === element[1]) {
+        check = true;
+      }
+    }
+
+    if (check === false) {
+      //Initializing objectCard
+      const objectCard = document.getElementById(this.position);
+      if (this.type === "health") {
+        objectCard.className += " obj-health";
+      } else if (this.type === "strength") {
+        objectCard.className += " obj-strength";
+      }
+    }
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -541,10 +598,14 @@ window.addEventListener(
       // Attack"
       hero.attack();
     }
-
     if (event.code === "KeyW") {
       // Spell"
       hero.spell();
+    }
+    if (event.code === "Space") {
+      // Reboot"
+      game.boardNum = 0;
+      game.initialize();
     }
 
     if (event.code === "ArrowDown") {

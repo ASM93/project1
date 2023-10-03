@@ -6,14 +6,15 @@ class Hero {
     this.speed = 1;
     this.attackSpeed = 1;
     this.life = 3;
-    this.strength = 1;
+    this.strength_phy = 2;
+    this.strength_spell = 1;
     this.attackMode = "auto";
   }
 
   spawn(startPosition, dir) {
     this.position = startPosition;
     const heroCard = document.getElementById([this.position]);
-    heroCard.className = `hero-${dir}`;
+    heroCard.className = `hero hero-${dir}`;
   }
 
   move(x, y, dir) {
@@ -23,31 +24,47 @@ class Hero {
     let newX = this.position[0] + x;
     let newY = this.position[1] + y;
     let mobCheck = false;
+    let objectCheck = false;
+    let object;
+    let objIndex = -1;
     let treeCheck = false;
     let gateCheck = false;
     let castleCheck = false;
 
-    // check if mobs or tree
+    // check if mobs, tree, castle, object, gate
     for (let element of game.mobs) {
       if (element.position[0] === newX && element.position[1] === newY) {
         mobCheck = true;
+        break;
       }
     }
     for (let element of game.tree) {
       if (element[0] === newX && element[1] === newY) {
         treeCheck = true;
+        break;
       }
     }
     for (let element of game.castle) {
       if (element[0] === newX && element[1] === newY) {
         castleCheck = true;
+        break;
       }
     }
-
-    // check if Gate
     for (let element of game.gates) {
       if (element[0] === newX && element[1] === newY) {
         gateCheck = true;
+        break;
+      }
+    }
+    for (let i = 0; i < game.objects.length; i++) {
+      if (
+        game.objects[i].position[0] === newX &&
+        game.objects[i].position[1] === newY
+      ) {
+        objectCheck = true;
+        object = element;
+        objIndex = i;
+        break;
       }
     }
 
@@ -59,6 +76,20 @@ class Hero {
         game.boardType = 1;
       }
       game.newBoard([newX, newY]);
+    } else if (objectCheck === true) {
+      this.position = [newX, newY];
+      let newHeroCard = document.getElementById([newX, newY]);
+      newHeroCard.className += ` hero hero-${dir}`;
+      let oldObjCard = document.getElementById([newX, newY]);
+      oldObjCard.className = "";
+      game.objects.splice(objIndex, 1);
+      if (object.type === "health") {
+        this.life++;
+        this.updateData();
+      } else if (object.type === "strength") {
+        this.strength++;
+        this.updateData();
+      }
     } else if (
       newX === 0 ||
       newY === 0 ||
@@ -111,10 +142,12 @@ class Hero {
         this.position[1] + y === element.position[1]
       ) {
         // hit
-        element.life -= this.strength;
+        element.life -= this.strength_phy;
+        element.updateLife();
         if (element.life <= 0) {
           const mobCard = document.getElementById(element.position);
           let newMobCard = mobCard.className.replace("mob", "");
+          mobCard.innerHTML = "";
           mobCard.className = newMobCard;
           let mobIndex;
           for (let i = 0; i < game.mobs.length; i++) {
@@ -189,6 +222,25 @@ class Hero {
       hero.spells.push([spellPositionX, spellPositionY, spellDir]);
       let spellCard = document.getElementById([spellPositionX, spellPositionY]);
       spellCard.className += " spell";
+    }
+  }
+
+  updateData() {
+    const life = document.getElementById("life-box");
+    life.innerHTML = "";
+    for (let i = 0; i < hero.life; i++) {
+      life.innerHTML += "💛";
+    }
+    const strength_phy = document.getElementById("strength-box_phy");
+
+    strength_phy.innerHTML = "";
+    for (let i = 0; i < this.strength_phy; i++) {
+      strength_phy.innerHTML += "🏹";
+    }
+    const strength_spell = document.getElementById("strength-box_spell");
+    strength_spell.innerHTML = "";
+    for (let i = 0; i < this.strength_spell; i++) {
+      strength_spell.innerHTML += "✨";
     }
   }
 }
