@@ -361,78 +361,80 @@ class Game {
 
   run() {
     let count = 0;
-    let intervalID = setInterval(() => {
-      count++;
-      if (count % this.spellSpeed === 0) {
-        //let status = this.checkStatus();
-        // Make Mobs move
-        for (let element of this.mobs) {
-          let bestWay = element.calcBestWay(element);
-          element.move(bestWay[0], bestWay[1]);
-        }
-
-        // Stop Game
-        if (hero.status === "Dead") {
-          clearInterval(intervalID);
-        }
-        const btnRight = document.getElementById("start");
-        btnRight.addEventListener("click", () => {
-          clearInterval(intervalID);
-        });
-      }
-      /////////// Automate Spell - Start ///////////
-
-      // Init obstacle
-      let obstacle = [...game.tree];
-      for (let i = 0; i < game.gates.length; i++) {
-        obstacle.push(game.gates[i]);
-      }
-      for (let i = 0; i < game.castle.length; i++) {
-        obstacle.push(game.castle[i]);
-      }
-
-      // Check all Spells
-      let spellIndex = -1;
-      for (let element of hero.spells) {
-        spellIndex++;
-
-        let spellCard = document.getElementById([element[0], element[1]]);
-
-        let x = 0;
-        let y = 0;
-        if (element[2] === "up") {
-          x = -1;
-        } else if (element[2] === "down") {
-          x = 1;
-        } else if (element[2] === "right") {
-          y = 1;
-        } else if (element[2] === "left") {
-          y = -1;
-        }
-
-        // Check obstacle or Mobs or OutOfMap - PART 1
-        let checkObstacle = false;
-        let checkMob = false;
-        let hitMob;
-        let checkMap = false;
-
-        for (let element2 of obstacle) {
-          if (
-            element[0] + x === element2[0] &&
-            element[1] + y === element2[1]
-          ) {
-            checkObstacle = true;
+    let intervalID = setInterval(
+      () => {
+        count++;
+        if (count % this.spellSpeed === 0) {
+          //let status = this.checkStatus();
+          // Make Mobs move
+          for (let element of this.mobs) {
+            let bestWay = element.calcBestWay(element);
+            element.move(bestWay[0], bestWay[1]);
           }
+
+          // Stop Game
+          if (hero.status === "Dead") {
+            clearInterval(intervalID);
+          }
+          const btnRight = document.getElementById("start");
+          btnRight.addEventListener("click", () => {
+            clearInterval(intervalID);
+          });
         }
-        for (let element3 of this.mobs) {
-          if (
-            (element[0] + x === element3.position[0] &&
-              element[1] + y === element3.position[1]) ||
-            (element[0] === element3.position[0] &&
-              element[1] === element3.position[1])
-          ) {
-            checkMob = true;
-            hitMob = element3;
+        /////////// Automate Spell - Start ///////////
+
+        // Init obstacle
+        let obstacle = [...game.tree];
+        for (let i = 0; i < game.gates.length; i++) {
+          obstacle.push(game.gates[i]);
+        }
+        for (let i = 0; i < game.castle.length; i++) {
+          obstacle.push(game.castle[i]);
+        }
+
+        // Check all Spells
+        let spellIndex = -1;
+        for (let element of hero.spells) {
+          spellIndex++;
+
+          let spellCard = document.getElementById([element[0], element[1]]);
+
+          let x = 0;
+          let y = 0;
+          if (element[2] === "up") {
+            x = -1;
+          } else if (element[2] === "down") {
+            x = 1;
+          } else if (element[2] === "right") {
+            y = 1;
+          } else if (element[2] === "left") {
+            y = -1;
+          }
+
+          // Check obstacle or Mobs or OutOfMap - PART 1
+          let checkObstacle = false;
+          let checkMob = false;
+          let hitMob;
+          let checkMap = false;
+
+          for (let element2 of obstacle) {
+            if (
+              element[0] + x === element2[0] &&
+              element[1] + y === element2[1]
+            ) {
+              checkObstacle = true;
+            }
+          }
+          for (let element3 of this.mobs) {
+            if (
+              (element[0] + x === element3.position[0] &&
+                element[1] + y === element3.position[1]) ||
+              (element[0] === element3.position[0] &&
+                element[1] === element3.position[1])
+            ) {
+              checkMob = true;
+              hitMob = element3;
+            }
           }
 
           if (
@@ -493,10 +495,11 @@ class Game {
             nextSpellCard.className += " spell";
           }
         }
-      }
+      },
 
       /////////// Automate Spell - End ///////////
-    }, 1000 / this.spellSpeed);
+      1000 / this.spellSpeed
+    );
   }
 }
 
