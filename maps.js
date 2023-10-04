@@ -9,7 +9,7 @@ function genMap(mapNumb, mapSize, startPosition) {
       divCard.className = "board-card";
       divCard.id = [i, j];
       let width = 100 / game.boardSize[1];
-      let height = 80 / game.boardSize[0];
+      let height = 78 / game.boardSize[0];
       divCard.style.width = `${width}%`;
       divCard.style.height = `${height}vh`;
     }
@@ -99,7 +99,7 @@ function genMap(mapNumb, mapSize, startPosition) {
   //////////// CASTLE - BOSS ////////////
   else if (mapNumb === 3) {
     game.spawnWalls();
-
+    game.spawnBoss();
     let boardCard = document.getElementById("board");
     boardCard.className = "board-castle";
     for (let element of game.tree) {

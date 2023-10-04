@@ -9,6 +9,7 @@ class Hero {
     this.strength_phy = 2;
     this.strength_spell = 1;
     this.attackMode = "auto";
+    this.canMove = true;
   }
 
   spawn(startPosition, dir) {
@@ -18,12 +19,14 @@ class Hero {
   }
 
   move(x, y, dir) {
+    if (!this.canMove) return;
     let oldHeroCard = document.getElementById([this.position]);
     let newOldHeroCard = oldHeroCard.className.replace(/hero(.*)/, "");
     oldHeroCard.className = newOldHeroCard;
     let newX = this.position[0] + x;
     let newY = this.position[1] + y;
     let mobCheck = false;
+    let bossCheck = false;
     let objectCheck = false;
     let object;
     let objIndex = -1;
@@ -31,10 +34,16 @@ class Hero {
     let gateCheck = false;
     let castleCheck = false;
 
-    // check if mobs, tree, castle, object, gate
+    // check if mobs, boss, tree, castle, object, gate
     for (let element of game.mobs) {
       if (element.position[0] === newX && element.position[1] === newY) {
         mobCheck = true;
+        break;
+      }
+    }
+    for (let element of game.boss) {
+      if (element.position[0] === newX && element.position[1] === newY) {
+        bossCheck = true;
         break;
       }
     }
@@ -62,45 +71,61 @@ class Hero {
         game.objects[i].position[1] === newY
       ) {
         objectCheck = true;
-        object = element;
+        object = game.objects[i];
         objIndex = i;
         break;
       }
     }
 
-    // DOING
+    //// MOVINGGGG ////
+    // IF GATE
+
     if (gateCheck === true) {
-      if (game.boardType === 1) {
+      if (game.waveNum === 4) {
+        game.boardType = 3;
+      } else if (game.boardType === 1) {
         game.boardType = 2;
       } else if (game.waveNum === 1) {
         game.boardType = 1;
       }
       game.newBoard([newX, newY]);
-    } else if (objectCheck === true) {
+    }
+    // IF OBJECT
+    else if (objectCheck === true) {
       this.position = [newX, newY];
       let newHeroCard = document.getElementById([newX, newY]);
-      newHeroCard.className += ` hero hero-${dir}`;
-      let oldObjCard = document.getElementById([newX, newY]);
-      oldObjCard.className = "";
+      let newHeroCard2 = newHeroCard.className.replace(/obj-(.*)/, "");
+      newHeroCard2 += ` hero hero-${dir}`;
+      newHeroCard.className = newHeroCard2;
       game.objects.splice(objIndex, 1);
-      if (object.type === "health") {
+
+      //effect
+      if (object.type === "health" && this.life <= 3) {
         this.life++;
         this.updateData();
-      } else if (object.type === "strength") {
-        this.strength++;
+      } else if (object.type === "strength" && this.strength_phy <= 2) {
+        this.strength_phy++;
+        this.updateData();
+      } else if (object.type === "spell" && this.strength_spell <= 2) {
+        this.strength_spell++;
         this.updateData();
       }
-    } else if (
+    }
+    // IF OUTSIDE, MOB, TREE, CASTLE
+    else if (
       newX === 0 ||
       newY === 0 ||
       newX > game.boardSize[0] ||
       newY > game.boardSize[1] ||
       mobCheck === true ||
+      bossCheck === true ||
       treeCheck === true ||
       castleCheck === true
     ) {
       oldHeroCard.className += ` hero hero-${dir}`;
-    } else {
+    }
+    // MOVE !
+    else {
       this.position = [newX, newY];
       let newHeroCard = document.getElementById([newX, newY]);
       newHeroCard.className += ` hero hero-${dir}`;
@@ -109,6 +134,7 @@ class Hero {
 
   attack() {
     //Check direction
+    this.canMove = false;
     let heroCard = document.getElementById(this.position);
     let oldClass = heroCard.className;
     heroCard.className += "-attack";
@@ -116,6 +142,7 @@ class Hero {
     // Clear Hero skin
     setTimeout(() => {
       heroCard.className = oldClass;
+      this.canMove = true;
     }, 100);
 
     let x = 0;
@@ -136,7 +163,14 @@ class Hero {
     }
 
     // Check Mob
-    for (let element of game.mobs) {
+
+    let allMobs = [...game.mobs];
+
+    if (game.boardType === 3) {
+      allMobs.push(game.boss[0]);
+    }
+
+    for (let element of allMobs) {
       if (
         this.position[0] + x === element.position[0] &&
         this.position[1] + y === element.position[1]

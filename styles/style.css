@@ -1,28 +1,28 @@
 @media screen and (max-width: 768px) {
-}
+  .no-mobile {
+    display: none !important;
+  }
 
-@media screen and (min-width: 768px) {
   body {
     width: 100%;
     height: 100vh;
     display: flex;
-    flex-direction: row;
+    flex-direction: column-reverse;
     align-items: center;
     margin: auto;
     font-family: monospace;
-    background-color: rgb(157, 127, 255);
   }
 
   h1 {
     text-align: center;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     font-family: monospace;
   }
 
   h2 {
     text-align: center;
-    font-size: 1.25rem;
+    font-size: 1rem;
     font-weight: bold;
     font-family: monospace;
   }
@@ -33,47 +33,56 @@
     font-family: monospace;
   }
 
-  .left,
-  .right {
-    width: 20%;
+  .left {
+    width: 100%;
     height: 90vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
     margin: auto;
-    padding-top: 10vh;
-    background-color: aquamarine;
+    z-index: 99;
+  }
+
+  .right {
+    width: 100%;
+    height: 60vh;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin: auto;
+    z-index: 0;
   }
   .data {
     width: 100%;
-    height: 32vh;
+    height: 5vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    background-color: blue;
+    margin-bottom: 5vh;
+    z-index: 98;
   }
   .data-container {
     width: 100%;
-    height: 25vh;
+    height: 5vh;
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
     align-items: center;
     margin: auto;
     justify-content: flex-start;
-    background-color: chocolate;
   }
   .box-container {
     width: 100%;
-    height: 50vh;
+    height: 20vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin: auto;
     padding-top: 2%;
-    background-color: chocolate;
+    position: fixed;
+    bottom: 0%;
   }
 
   .box-container h2,
@@ -82,11 +91,10 @@
   }
 
   .raw-box {
-    width: 100%;
     align-items: center;
-
-    font-size: 2rem;
+    font-size: 1rem;
     text-align: center;
+    margin-left: 5%;
   }
   .raw-box-ind {
     width: 15%;
@@ -101,7 +109,6 @@
     flex-wrap: wrap;
     align-items: center;
     margin: auto;
-    background-color: chocolate;
   }
 
   .instruction-img {
@@ -110,16 +117,17 @@
 
   .keyPad {
     background-image: url(.././src/pad.png);
-    width: 100%;
+    width: 50%;
     height: 100%;
     background-position: center;
     background-repeat: no-repeat;
+    background-origin: content-box;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-bottom: 20%;
+    opacity: 0.2;
     background-size: cover;
-    padding: 20% 0;
+    z-index: 99;
   }
 
   .keyPadBox {
@@ -129,34 +137,37 @@
   }
 
   .center {
-    width: 60%;
-    height: 100vh;
+    width: 100%;
+    height: 80vh;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
     margin: auto;
-    background-color: rgb(255, 127, 127);
   }
 
-  header,
-  footer {
+  header {
     width: 100%;
-    height: 10vh;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
     text-align: center;
-    justify-content: center;
+    justify-content: flex-start;
     margin: auto;
-    background-color: rgb(104, 21, 102);
+    position: fixed;
+    top: 1%;
+    left: 5%;
+  }
+
+  footer {
+    display: none;
   }
 
   .board {
     width: 100%;
     display: flex;
-    height: 80vh;
+    height: 78vh;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
@@ -173,7 +184,7 @@
   .board-castle {
     width: 100%;
     display: flex;
-    height: 80vh;
+    height: 78vh;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
@@ -231,13 +242,13 @@
     color: red;
     line-height: 0%;
   }
-  .mob-red {
+  /* .mob-red {
     background-image: url(.././src/mob-red.png) !important;
     background-size: auto;
     background-repeat: no-repeat;
     background-position: center;
     transition-timing-function: ease-in-out;
-  }
+  } */
   .mob-attack {
     background-size: auto;
     background-repeat: no-repeat;
@@ -250,6 +261,43 @@
     color: red;
     line-height: 0%;
   }
+  .boss {
+    background-image: url(.././src/boss.png);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease-in-out;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: red;
+    line-height: 0%;
+  }
+  .boss-attack {
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease-in-out;
+    background-image: url(.././src/boss_att.png);
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: red;
+    line-height: 0%;
+  }
+  .boss-spell {
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease-in-out;
+    background-image: url(.././src/boss_spell.png);
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: red;
+    line-height: 0%;
+  }
+
   .hero {
     background-size: auto;
     background-repeat: no-repeat;
@@ -312,6 +360,394 @@
     background-position: center;
     transition-timing-function: ease-in-out;
   }
+  .obj-spell {
+    background-image: url(.././src/spell.png);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease-in-out;
+  }
+
+  footer p {
+    font-size: 1rem;
+    font-style: italic;
+  }
+
+  .button {
+    width: 35%;
+    height: 5%;
+    background-color: white;
+    border-radius: 5%;
+    border: 1px black solid;
+    box-shadow: 1px 1px;
+    font-weight: bold;
+    position: fixed;
+    top: 2%;
+    right: 5%;
+  }
+  .button:hover {
+    background-color: #b2b8b2;
+  }
+
+  .button:active {
+    background-color: #b2b8b2;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  body {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: auto;
+    font-family: monospace;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: monospace;
+  }
+
+  h2 {
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+    font-family: monospace;
+  }
+
+  p {
+    text-align: center;
+    font-size: 1rem;
+    font-family: monospace;
+  }
+
+  .left,
+  .right {
+    width: 20%;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin: auto;
+    padding-top: 10vh;
+  }
+  .data {
+    width: 100%;
+    height: 32vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .data-container {
+    width: 100%;
+    height: 25vh;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: auto;
+    justify-content: flex-start;
+  }
+  .box-container {
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    padding-top: 2%;
+  }
+
+  .box-container h2,
+  p {
+    width: 100%;
+  }
+
+  .raw-box {
+    width: 100%;
+    align-items: center;
+
+    font-size: 2rem;
+    text-align: center;
+  }
+  .raw-box-ind {
+    width: 15%;
+    align-items: center;
+    margin: auto;
+  }
+
+  .instruction {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: auto;
+  }
+
+  .instruction-img {
+    height: 20vh;
+  }
+
+  .keyPad {
+    background-image: url(.././src/pad.png);
+    width: 80%;
+    height: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 20%;
+    background-size: cover;
+    padding: 20% 0;
+  }
+
+  .keyPadBox {
+    width: 30%;
+    margin: auto;
+    height: 33%;
+  }
+
+  .center {
+    width: 60%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: auto;
+  }
+
+  header,
+  footer {
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    margin: auto;
+  }
+
+  .board {
+    width: 100%;
+    display: flex;
+    height: 78vh;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: auto;
+    background-color: rgb(21, 104, 21);
+    justify-content: center;
+    font-family: monospace;
+    font-size: 3rem;
+    font-weight: bold;
+    background-image: url(.././src/grass2.jpg);
+    background-size: 10%;
+    box-shadow: 0px 0px 5px 5px black;
+    border: 5px solid;
+  }
+
+  .board-castle {
+    width: 100%;
+    display: flex;
+    height: 78vh;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: auto;
+    background-color: rgb(21, 104, 21);
+    justify-content: center;
+    font-family: monospace;
+    font-size: 3rem;
+    font-weight: bold;
+    background-image: url(.././src/stone2.avif);
+    background-size: 4%;
+    box-shadow: 0px 0px 5px 5px black;
+    border: 5px solid;
+  }
+
+  .board-card {
+    width: 100%;
+    aspect-ratio: 1;
+    margin: auto;
+    background-size: contain !important;
+  }
+
+  .grass {
+    /* background-image: url(.././src/grass.jpeg);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover; */
+  }
+  .tree {
+    background-image: url(.././src/tree.png);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .gate {
+    background-image: url(.././src/gate.png) !important;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .castle {
+    background-image: url(.././src/stone.webp);
+    background-size: auto;
+    background-size: 120% !important ;
+    background-position: center;
+  }
+  .mob {
+    background-image: url(.././src/mob.png);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease-in-out;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    color: red;
+    line-height: 0%;
+  }
+  /* .mob-red {
+    background-image: url(.././src/mob-red.png) !important;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease-in-out;
+  } */
+  .mob-attack {
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease-in-out;
+    background-image: url(.././src/mob_att.png);
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    color: red;
+    line-height: 0%;
+  }
+  .boss {
+    background-image: url(.././src/boss.png);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease-in-out;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: red;
+    line-height: 0%;
+  }
+  .boss-attack {
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease-in-out;
+    background-image: url(.././src/boss_att.png);
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: red;
+    line-height: 0%;
+  }
+  .boss-spell {
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease-in-out;
+    background-image: url(.././src/boss_spell.png);
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: red;
+    line-height: 0%;
+  }
+
+  .hero {
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease;
+  }
+  .hero-up {
+    background-image: url(.././src/up_walk.png);
+  }
+  .hero-right {
+    background-image: url(.././src/right_walk.png);
+  }
+  .hero-left {
+    background-image: url(.././src/left_walk.png);
+  }
+  .hero-down {
+    background-image: url(.././src/down_walk.png);
+  }
+  .hero-up-attack {
+    background-image: url(.././src/up_att.png);
+  }
+  .hero-right-attack {
+    background-image: url(.././src/right_att.png);
+  }
+  .hero-left-attack {
+    background-image: url(.././src/left_att.png);
+  }
+  .hero-down-attack {
+    background-image: url(.././src/down_att.png);
+  }
+  .hero-up-spell {
+    background-image: url(.././src/up_spell.png);
+  }
+  .hero-right-spell {
+    background-image: url(.././src/right_spell.png);
+  }
+  .hero-left-spell {
+    background-image: url(.././src/left_spell.png);
+  }
+  .hero-down-spell {
+    background-image: url(.././src/down_spell.png);
+  }
+  .spell {
+    background-image: url(.././src/fireball.png) !important;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .obj-health {
+    background-image: url(.././src/health.png);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease-in-out;
+  }
+  .obj-strength {
+    background-image: url(.././src/sword.png);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease-in-out;
+  }
+  .obj-spell {
+    background-image: url(.././src/spell.png);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition-timing-function: ease-in-out;
+  }
 
   footer p {
     font-size: 1rem;
@@ -328,11 +764,11 @@
     font-weight: bold;
   }
   .button:hover {
-    background-color: #3e8e41;
+    background-color: #b2b8b2;
   }
 
   .button:active {
-    background-color: #3e8e41;
+    background-color: #b2b8b2;
     box-shadow: 0 5px #666;
     transform: translateY(4px);
   }

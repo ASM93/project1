@@ -5,7 +5,7 @@ class Game {
     this.boardSize = [21, 21];
     this.boards = [];
     this.boardNum = 0;
-    this.boardType = 0;
+    this.boardType = 1;
     this.castle = [];
     this.startMob = 1;
     this.waveAcc = 2;
@@ -17,6 +17,7 @@ class Game {
     this.lifeStart = 3;
     this.strengthStart = 1;
     this.mobs = [];
+    this.boss = [];
     this.tree = [];
     this.hero = {};
     this.gates = [];
@@ -32,12 +33,14 @@ class Game {
     if (this.security === 1) {
       //Clean the map
       this.mobs = [];
+      this.boss = [];
       this.objects = [];
       this.tree = [];
       this.gates = [];
       this.castle = [];
       this.hero = {};
       hero.spells = [];
+      hero.life = this.lifeStart;
       this.waveNum = 0;
       this.boardType = 0;
       const allCard = document.querySelectorAll(".board-card");
@@ -51,7 +54,7 @@ class Game {
       boardCard.className = "board";
 
       // Spawn and start the game
-      this.spawnMap(game.boardType, game.boardSize, [
+      this.spawnMap(this.boardType, this.boardSize, [
         this.boardSize[0],
         Math.round(this.boardSize[1] / 2),
       ]);
@@ -74,9 +77,10 @@ class Game {
     }
   }
 
-  newBoard(oldGate, type) {
+  newBoard(oldGate) {
     //Clean the map
     this.mobs = [];
+    this.boss = [];
     this.objects = [];
     this.tree = [];
     this.gates = [];
@@ -105,7 +109,7 @@ class Game {
       startDir = "up";
       startPosition = [this.boardSize[0], Math.round(this.boardSize[1] / 2)];
     }
-    this.spawnMap(game.boardType, game.boardSize, startPosition);
+    this.spawnMap(this.boardType, this.boardSize, startPosition);
     hero.spawn(startPosition, startDir);
   }
 
@@ -113,15 +117,19 @@ class Game {
    */ ////////////////////////
 
   checkStatus() {
+    if (this.boardType === 3 && this.boss) {
+      if (game.boss[0].life <= 0) {
+        board.innerHTML = "WIN";
+        return "Dead";
+      }
+    }
     if (hero.life <= 0) {
       board.innerHTML = "LOST";
-      board.innerHTML.style = "text-align:center";
-      clearInterval(intervalID3);
       return "Dead";
+    } else {
+      return "Alive";
     }
-    return "Alive";
   }
-
   /** GENERATE
    */ ////////////////////////
 
@@ -165,10 +173,8 @@ class Game {
     // First wave
     setTimeout(() => {
       this.waveNum += 1;
-      // const waveNum = document.getElementById("numb-box");
-      // waveNum.innerHTML = 1;
+
       let mobNum = this.startMob + (this.waveNum - 1) * this.waveAcc;
-      let check = false;
       for (let i = mobNum; i > 0; i--) {
         let mob = new Mob();
         let mobX = 1 + Math.floor(Math.random() * this.boardSize[0]);
@@ -199,8 +205,6 @@ class Game {
           i++;
         }
       }
-
-      // clearInterval(intervalID);
     }, 500);
 
     // Spawn Mob every wave
@@ -215,6 +219,41 @@ class Game {
     // this.mobs.push(mob);
     //   //   }
     // }, this.waveDur * 1000);
+  }
+
+  spawnBoss() {
+    setTimeout(() => {
+      this.waveNum += 1;
+
+      let boss = new Boss();
+      let bossX = Math.floor(this.boardSize[0] / 2);
+      let bossY = Math.floor(this.boardSize[1] / 2);
+
+      // Check obstacle
+      let check = false;
+      let obstacle = [...game.tree];
+      for (let i = 0; i < game.mobs.length; i++) {
+        obstacle.push(game.mobs[i].position);
+      }
+      for (let i = 0; i < game.gates.length; i++) {
+        obstacle.push(game.gates[i]);
+      }
+      for (let i = 0; i < game.castle.length; i++) {
+        obstacle.push(game.castle[i]);
+      }
+
+      for (let element of obstacle) {
+        if (bossX === element[0] && bossY === element[1]) {
+          check = true;
+        }
+      }
+      if (check === false) {
+        boss.spawn(bossX, bossY, this.waveNum);
+        game.boss.push(boss);
+      } else {
+        i++;
+      }
+    }, 500);
   }
 
   spawnTree(noCard) {
@@ -363,17 +402,23 @@ class Game {
     let count = 0;
     let intervalID = setInterval(
       () => {
+        let check = this.checkStatus();
+        if (check === "Dead") {
+          clearInterval(intervalID);
+        }
         count++;
 
-        /////////// Automate Mobs - Start ///////////
+        /////////// Automate Game, Mobs & Boss - Start ///////////
         if (count % this.spellSpeed === 0) {
-          //let status = this.checkStatus();
           // Make Mobs move
           for (let element of this.mobs) {
-            console.log("tada");
-            console.log(element);
             let bestWay = element.calcBestWay(element);
-            console.log(bestWay);
+            element.move(bestWay[0], bestWay[1]);
+          }
+
+          // Make Boss move
+          for (let element of this.boss) {
+            let bestWay = element.calcBestWay(element);
             element.move(bestWay[0], bestWay[1]);
           }
 
@@ -387,14 +432,18 @@ class Game {
           });
         }
 
-        /////////// Automate Object - Start ///////////
-        if (count % this.objFreq === 0) {
-          let object = new Object();
+        if (count % 10 === 0) {
+          // Make Boss spell
+          for (let element of this.boss) {
+            element.spell();
+          }
+        }
 
+        /////////// Automate Object - Start ///////////
+        if (count % this.objFreq === 0 && game.objects.length <= 3) {
+          let object = new Object();
           game.objects.push(object);
           object.spawn();
-          console.log("OBJ SPAWNED");
-          console.log(object);
         }
 
         /////////// Automate Spell - Start ///////////
@@ -408,7 +457,7 @@ class Game {
           obstacle.push(game.castle[i]);
         }
 
-        // Check all Spells
+        /// HERO SPELLS ///
         let spellIndex = -1;
         for (let element of hero.spells) {
           spellIndex++;
@@ -427,11 +476,14 @@ class Game {
             y = -1;
           }
 
-          // Check obstacle or Mobs or OutOfMap - PART 1
+          // Check obstacle, Mobs, OutOfMap, Hero - PART 1
           let checkObstacle = false;
           let checkMob = false;
           let hitMob;
+          let hitBoss;
           let checkMap = false;
+          let checkHero = false;
+          let checkBoss = false;
 
           for (let element2 of obstacle) {
             if (
@@ -453,6 +505,25 @@ class Game {
             }
           }
 
+          for (let element4 of this.boss) {
+            if (
+              (element[0] + x === element4.position[0] &&
+                element[1] + y === element4.position[1]) ||
+              (element[0] === element4.position[0] &&
+                element[1] === element4.position[1])
+            ) {
+              checkBoss = true;
+              hitBoss = element4;
+            }
+          }
+
+          if (
+            element[0] + x === this.hero.position[0] &&
+            element[1] + y === this.hero.position[1]
+          ) {
+            checkHero = true;
+          }
+
           if (
             element[0] + x === 0 ||
             element[1] + y === 0 ||
@@ -462,13 +533,25 @@ class Game {
             checkMap = true;
           }
 
-          // Check obstacle or Mobs - PART 2
+          // Check obstacle or Map - PART 2
           if (checkObstacle === true || checkMap === true) {
             hero.spells.splice(spellIndex, 1);
             let newSpellCard = spellCard.className.replace("spell", "");
             spellCard.className = newSpellCard;
             continue;
           }
+          // Check hero
+          else if (checkHero === true) {
+            hero.life--;
+            hero.updateData();
+
+            // hit - delete spell
+            hero.spells.splice(spellIndex, 1);
+            let newSpellCard = spellCard.className.replace("spell", "");
+            spellCard.className = newSpellCard;
+            continue;
+          }
+
           // Check Mobs
           else if (checkMob === true) {
             // hit - damage
@@ -491,16 +574,43 @@ class Game {
               }
               game.mobs.splice(mobIndex, 1);
             }
-
             // hit - delete spell
             let newSpellCard = spellCard.className.replace("spell", "");
             spellCard.className = newSpellCard;
             hero.spells.splice(spellIndex, 1);
             continue;
-          } else {
-            // Move on
-            console.log("element:");
-            console.log(element);
+          }
+
+          // Check Boss
+          else if (checkBoss === true) {
+            // hit - damage
+            hitBoss.life -= hero.strength_spell;
+            hitBoss.updateLife();
+            if (hitBoss.life <= 0) {
+              const mobCard = document.getElementById(hitBoss.position);
+              let newMobCard = mobCard.className.replace("boss", "");
+              mobCard.className = newMobCard;
+              mobCard.innerHTML = "";
+              let mobIndex;
+              for (let i = 0; i < this.boss.length; i++) {
+                if (
+                  hitBoss.position[0] === this.boss[i].position[0] &&
+                  hitBoss.position[1] === this.boss[i].position[1]
+                ) {
+                  mobIndex = i;
+                  break;
+                }
+              }
+              this.boss.splice(mobIndex, 1);
+            }
+            // hit - delete spell
+            let newSpellCard = spellCard.className.replace("spell", "");
+            spellCard.className = newSpellCard;
+            hero.spells.splice(spellIndex, 1);
+            continue;
+          }
+          // Move on
+          else {
             element[0] = element[0] + x;
             element[1] = element[1] + y;
             let newSpellCard = spellCard.className.replace("spell", ""); //take out previous card
@@ -511,6 +621,131 @@ class Game {
               element[1],
             ]); // init next card
             nextSpellCard.className += " spell";
+          }
+        }
+
+        /// BOSS SPELLS ///
+
+        if (this.boardType === 3) {
+          // Check all Spells
+          let spellIndex2 = -1;
+
+          for (let element of this.boss[0].spells) {
+            spellIndex2++;
+            let spellCard = document.getElementById([element[0], element[1]]);
+            let x = 0;
+            let y = 0;
+            if (element[2] === "up") {
+              x = -1;
+            } else if (element[2] === "down") {
+              x = 1;
+            } else if (element[2] === "right") {
+              y = 1;
+            } else if (element[2] === "left") {
+              y = -1;
+            }
+
+            // Check obstacle, Mobs, OutOfMap, Hero - PART 1
+            let checkObstacle = false;
+            let checkMob = false;
+            let hitMob;
+            let checkMap = false;
+            let checkHero = false;
+
+            for (let element2 of obstacle) {
+              if (
+                element[0] + x === element2[0] &&
+                element[1] + y === element2[1]
+              ) {
+                checkObstacle = true;
+              }
+            }
+            for (let element3 of this.mobs) {
+              if (
+                (element[0] + x === element3.position[0] &&
+                  element[1] + y === element3.position[1]) ||
+                (element[0] === element3.position[0] &&
+                  element[1] === element3.position[1])
+              ) {
+                checkMob = true;
+                hitMob = element3;
+              }
+            }
+            if (
+              element[0] + x === this.hero.position[0] &&
+              element[1] + y === this.hero.position[1]
+            ) {
+              checkHero = true;
+            }
+            if (
+              element[0] + x === 0 ||
+              element[1] + y === 0 ||
+              element[0] + x > game.boardSize[0] ||
+              element[1] + y > game.boardSize[1]
+            ) {
+              checkMap = true;
+            }
+
+            // Check obstacle or Mobs - PART 2
+            if (checkObstacle === true || checkMap === true) {
+              this.boss[0].spells.splice(spellIndex2, 1);
+              let newSpellCard = spellCard.className.replace("spell", "");
+              spellCard.className = newSpellCard;
+              continue;
+            }
+            // Check hero
+            else if (checkHero === true) {
+              hero.life--;
+              hero.updateData();
+
+              // hit - delete spell
+              let newSpellCard = spellCard.className.replace("spell", "");
+              spellCard.className = newSpellCard;
+              this.boss[0].spells.splice(spellIndex2, 1);
+              continue;
+            }
+
+            // Check Mobs
+            else if (checkMob === true) {
+              // hit - damage
+              hitMob.life -= hero.strength_spell;
+              hitMob.updateLife();
+              if (hitMob.life <= 0) {
+                const mobCard = document.getElementById(hitMob.position);
+                let newMobCard = mobCard.className.replace("mob", "");
+                mobCard.className = newMobCard;
+                mobCard.innerHTML = "";
+                let mobIndex;
+                for (let i = 0; i < game.mobs.length; i++) {
+                  if (
+                    hitMob.position[0] === game.mobs[i].position[0] &&
+                    hitMob.position[1] === game.mobs[i].position[1]
+                  ) {
+                    mobIndex = i;
+                    break;
+                  }
+                }
+                game.mobs.splice(mobIndex, 1);
+              }
+
+              // hit - delete spell
+              let newSpellCard = spellCard.className.replace("spell", "");
+              spellCard.className = newSpellCard;
+              this.boss[0].spells.splice(spellIndex2, 1);
+              continue;
+            } else {
+              // Move on
+              element[0] = element[0] + x;
+              element[1] = element[1] + y;
+              let newSpellCard = spellCard.className.replace("spell", ""); //take out previous card
+              spellCard.className = newSpellCard;
+
+              let nextSpellCard = document.getElementById([
+                element[0],
+                element[1],
+              ]); // init next card
+              nextSpellCard.className += " spell";
+            }
           }
         }
       },
@@ -530,12 +765,13 @@ class Object {
   }
   spawn() {
     // Select type
-    let random = Math.floor(Math.random() * 2);
-    console.log(random);
+    let random = Math.floor(Math.random() * 3);
     if (random === 0) {
       this.type = "health";
     } else if (random === 1) {
       this.type = "strength";
+    } else if (random === 2) {
+      this.type = "spell";
     }
 
     // Select random position
@@ -569,6 +805,8 @@ class Object {
         objectCard.className += " obj-health";
       } else if (this.type === "strength") {
         objectCard.className += " obj-strength";
+      } else if (this.type === "spell") {
+        objectCard.className += " obj-spell";
       }
     }
   }
@@ -642,6 +880,16 @@ key6.addEventListener("click", () => {
 const key8 = document.getElementById("keyPad8");
 key8.addEventListener("click", () => {
   hero.move(1, 0, "down");
+});
+
+const btn_mob_left = document.getElementById("btn_mob_left");
+btn_mob_left.addEventListener("click", () => {
+  hero.attack();
+});
+
+const btn_mob_right = document.getElementById("btn_mob_right");
+btn_mob_right.addEventListener("click", () => {
+  hero.spell();
 });
 
 // IMPORT CLASS
