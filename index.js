@@ -882,13 +882,13 @@ key8.addEventListener("click", () => {
   hero.move(1, 0, "down");
 });
 
-const btn_mob_left = document.getElementById("btn_mob_left");
+const btn_mob_left = document.getElementById("board");
 btn_mob_left.addEventListener("click", () => {
   hero.attack();
 });
 
-const btn_mob_right = document.getElementById("btn_mob_right");
-btn_mob_right.addEventListener("click", () => {
+const btn_mob_right = document.getElementById("board");
+btn_mob_right.addEventListener("dblclick", () => {
   hero.spell();
 });
 
