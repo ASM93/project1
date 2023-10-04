@@ -131,7 +131,7 @@
     flex-wrap: wrap;
     opacity: 0.2;
     background-size: cover;
-    z-index: 99;
+    z-index: 98;
   }
 
   .keyPadBox {
